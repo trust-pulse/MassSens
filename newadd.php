@@ -2,21 +2,24 @@
 
 session_start();
 
-require_once(__DIR__ . 'dbdata/config.php');
-require_once(__DIR__ . '/functions.php');
+if (isset($_POST['mass-up'])) {
+  $userName = $_POST['user-name'];
+  $artistName = $_POST['artist-name'];
+  $songName = $_POST['song-name'];
+  $youtubeUrl = $_POST['youtube-url'];
+  $massComment = $_POST['mass-comment'];
 
-if (isset($_POST['signup'])) {
-  $username = $_POST['username'];
-  $password = $_POST['password'];
   try {
+
     $db = new PDO('mysql:host=localhost; dbname=massusers','seita','Ffmania0930');
-    $sql = 'insert into user(username,password) value(?,?)';
+    $sql = 'insert into massdata(user_name,artist,title,youtube,comment) value(?,?,?,?,?)';
     $stmt = $db->prepare($sql);
-    $stmt->execute(array($username,$password));
+    $stmt->execute(array($userName,$artistName,$songName,$youtubeUrl,$massComment));
     $stmt = null;
     $db = null;
 
-    header('Location: http://localhost/MassSens/index.php');
+    header('Location: http://localhost/MassSens/contents.php');
+    var_dump($stmt);
     exit;
 
   }catch (PDOExeption $e) {
@@ -27,7 +30,6 @@ if (isset($_POST['signup'])) {
 
 ?>
 
-
 <!DOCTYPE html>
 <html lang="ja">
   <head>
@@ -37,7 +39,7 @@ if (isset($_POST['signup'])) {
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Sign-up - Mass Sense</title>
+    <title>Add Mass - Mass Sense</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
@@ -58,37 +60,30 @@ if (isset($_POST['signup'])) {
             <div class="inner">
               <h3 class="masthead-brand">Mass Sense</h3>
               <nav class="nav nav-masthead">
-                <a class="nav-link" href="index.php">Home</a>
-                <a class="nav-link" href="what.php">What is...</a>
-                <a class="nav-link" href="sign-up.php">Sign Up</a>
-                <a class="nav-link" href="sign-in.php">Sign In</a>
+                <a class="nav-link" href="#">My Page</a>
+                <a class="nav-link" href="#">Add Mass</a>
               </nav>
             </div>
           </div>
 
-          <div class="inner cover">
-            <div class="what-text">
-              <h2>新規会員登録</h2>
-          </div>
-          <div class="sign-up">
-            <form action="" method="POST">
-              <div class="form-group row">
-                <label for="signup-id" class="col-sm-2 col-form-label col-form-label-lg email-form">アカウント名</label>
-                <div class="col-sm-10">
-                  <input name="username" type="text" class="form-control form-control-lg" id="signup-id" placeholder="メールアドレスを入力してください">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="signup-pass" class="col-sm-2 col-form-label col-form-label-lg pass-form">パスワード</label>
-                <div class="col-sm-10">
-                  <input name="password" type="password" class="form-control form-control-lg" id="signup-pass" placeholder="パスワードを入力してください">
-                </div>
-              </div>
+          <form action="" method="post">
+            <h2>新しくコンテンツを追加する</h2>
+            <div class="form-group">
+              <div><label for="user-name">ユーザー名</label></div>
+              <div><input class="form-control form-control-lg" type="text" id="user-name" name="user-name" placeholder="アーティスト名を入力してください。"></div>
+              <div><label for="artist-name">アーティスト名</label></div>
+              <div><input class="form-control form-control-lg" type="text" id="artist-name" name="artist-name" placeholder="アーティスト名を入力してください。"></div>
+              <div><label for="song-name">曲名</label></label></div>
+              <div><input class="form-control form-control-lg" type="text" id="song-name" name="song-name" placeholder="曲名を入力してください。"></div>
+              <div><label for="youtube-url">YouTube※任意</label></div>
+              <div><input class="form-control form-control-lg" type="text" id="youtube-url" name="youtube-url" placeholder="YouTubeのURLを入力してください。"></div>              
+              <div><label for="exampleFormControlTextarea1">コメント</label></div>
+              <div><textarea class="form-control" id="exampleFormControlTextarea1" name="mass-comment" rows="10" style="width: 100%;"></textarea></div>
               <div class="col-auto my-1">
-                <button name="signup" type="submit" class="btn btn-lg btn-secondary sign-up-btn">Submit</button>
+                <button type="submit" name="mass-up" class="btn btn-lg btn-secondary sign-up-btn">Mass Up!!</button>
               </div>
-            </form>
-          </div>
+            </div>
+          </form>
 
           <div class="mastfoot">
             <div class="inner">

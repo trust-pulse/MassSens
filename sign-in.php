@@ -1,5 +1,10 @@
 <?php
 
+session_start();
+
+require_once(__DIR__ . 'dbdata/config.php');
+require_once(__DIR__ . '/functions.php');
+
 $err_msg = "";
 
 if (isset($_POST['login'])) {
@@ -75,7 +80,7 @@ if (isset($_POST['login'])) {
           <?php if ($err_msg !== null && $err_msg !== '') {echo $err_msg; } ?>
             <form action="" method="POST">
               <div class="form-group row">
-                <label for="colFormLabelId" class="col-sm-2 col-form-label col-form-label-lg email-form">アカウントID（Emailアドレス）</label>
+                <label for="colFormLabelId" class="col-sm-2 col-form-label col-form-label-lg email-form">アカウントID</label>
                 <div class="col-sm-10">
                   <input name="username" type="text" class="form-control form-control-lg" id="colFormLabelId" placeholder="メールアドレスを入力してください">
                 </div>
